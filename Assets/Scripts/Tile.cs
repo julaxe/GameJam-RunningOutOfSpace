@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,8 +8,11 @@ public class Tile : MonoBehaviour
 {
 
     private List<GameObject> _neighbors;
+    private List<GameObject> _neighborsWithFence;
     public bool hasFenceOnTop;
     public bool isCounted;
+    public int column;
+    public int row;
 
     private BoxCollider _fenceBoxCollider;
     private NavMeshObstacle _fenceNavMeshObstacle;
@@ -16,7 +20,7 @@ public class Tile : MonoBehaviour
     private Material _greenMaterial;
     private Material _redMaterial;
     private Material _blackMaterial;
-    
+
     void Awake()
     {
         _neighbors = new List<GameObject>();
@@ -39,12 +43,34 @@ public class Tile : MonoBehaviour
         _redMaterial = Resources.Load<Material>("Materials/RedMaterial");
         _blackMaterial = Resources.Load<Material>("Materials/BlackMaterial");
     }
+
     public void AddNewNeighbor(GameObject newTile)
     {
         _neighbors.Add(newTile);
     }
 
-    public void ShowFence()
+    public List<GameObject> GetNeighborsWithFence()
+    {
+        UpdateNeighborsWithFence();
+        return _neighborsWithFence;
+    }
+
+    public List<GameObject> GetNeighbors()
+    {
+        return _neighbors;
+    }
+
+    private void UpdateNeighborsWithFence()
+    {
+        _neighborsWithFence = new List<GameObject>();
+        foreach (var neighbor in _neighbors)
+        {
+            if (neighbor.GetComponent<Tile>().hasFenceOnTop)
+                _neighborsWithFence.Add(neighbor);
+        }
+    }
+
+public void ShowFence()
     {
         _fence.SetActive(true);
     }
@@ -61,9 +87,39 @@ public class Tile : MonoBehaviour
         //rebuild navmesh
         _fenceBoxCollider.enabled = true;
         _fenceNavMeshObstacle.enabled = true;
+        
         hasFenceOnTop = true;
+        if (!_fence.activeInHierarchy) _fence.SetActive(true);
     }
 
-
+    public List<GameObject> GetOppositeBlankTiles()
+    {
+        var newList = new List<GameObject>();
+        foreach (var neighbor1 in _neighbors)
+        {
+            foreach (var neighbor2 in _neighbors.Where(neighbor2 => neighbor1 != neighbor2))
+            {
+                if (neighbor1.GetComponent<Tile>().column == neighbor2.GetComponent<Tile>().column - 2 || neighbor1.GetComponent<Tile>().column == neighbor2.GetComponent<Tile>().column + 2)
+                {
+                    if (!neighbor1.GetComponent<Tile>().hasFenceOnTop && !neighbor2.GetComponent<Tile>().hasFenceOnTop)
+                    {
+                        newList.Add(neighbor1);
+                        newList.Add(neighbor2);
+                        return newList;
+                    }
+                }
+                if (neighbor1.GetComponent<Tile>().row == neighbor2.GetComponent<Tile>().row - 2 || neighbor1.GetComponent<Tile>().row == neighbor2.GetComponent<Tile>().row + 2)
+                {
+                    if (!neighbor1.GetComponent<Tile>().hasFenceOnTop && !neighbor2.GetComponent<Tile>().hasFenceOnTop)
+                    {
+                        newList.Add(neighbor1);
+                        newList.Add(neighbor2);
+                        return newList;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 }
