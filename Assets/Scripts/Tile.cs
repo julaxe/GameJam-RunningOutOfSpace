@@ -20,9 +20,11 @@ public class Tile : MonoBehaviour
     private Material _greenMaterial;
     private Material _redMaterial;
     private Material _blackMaterial;
+    private List<GameObject> _objectsOnTop;
 
     void Awake()
     {
+        _objectsOnTop = new List<GameObject>();
         _neighbors = new List<GameObject>();
         _fence = transform.Find("Fence").gameObject;
         _fenceBoxCollider = _fence.GetComponent<BoxCollider>();
@@ -120,6 +122,21 @@ public void ShowFence()
             }
         }
         return null;
+    }
+
+    public void AddObjectOnTop(GameObject newObj)
+    {
+        _objectsOnTop.Add(newObj);
+    }
+
+    public void DeleteObjectOnTop(GameObject objToDelete)
+    {
+        _objectsOnTop.Remove(objToDelete);
+    }
+
+    public List<GameObject> GetThingsOnTop()
+    {
+        return _objectsOnTop;
     }
 
 }

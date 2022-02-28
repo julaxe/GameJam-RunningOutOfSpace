@@ -9,13 +9,32 @@ public class FenceBuilder : MonoBehaviour
 {
     public bool isOn;
     public LayerMask whatIsGround;
+    public GameObject winScreen;
+    public GameObject losingScreen;
+    
     private GameObject _currentTile;
     private MapManager _mapManager;
     private int _tileCounter;
 
+    private List<GameObject> _listOfTiles1;
+    private List<GameObject> _listOfTiles2;
+    
+    //sound
+    private AudioSource _audioSource;
+    private AudioClip _winClip;
+    private AudioClip _buildClip;
+    
+    
+
     private void Awake()
     {
+        Time.timeScale = 1.0f;
+        _listOfTiles1 = new List<GameObject>();
+        _listOfTiles2 = new List<GameObject>();
         _mapManager = FindObjectOfType<MapManager>();
+        _audioSource = GetComponent<AudioSource>();
+        _winClip = Resources.Load<AudioClip>("Sounds/win");
+        _buildClip = Resources.Load<AudioClip>("Sounds/build");
     }
 
     private void Update()
@@ -32,6 +51,7 @@ public class FenceBuilder : MonoBehaviour
         {
             if (_currentTile.GetComponent<Tile>().hasFenceOnTop) return;
             _currentTile.GetComponent<Tile>().BuildFence();
+            _audioSource.PlayOneShot(_buildClip);
             IsPenClosed();
         }
     }
@@ -110,23 +130,102 @@ public class FenceBuilder : MonoBehaviour
             return;
         }
         ClearCounter();
-        CountNeighbors(oppositeTiles[0]);
-        Debug.Log("side 1: " + _tileCounter);
+        CountNeighbors1(oppositeTiles[0]);
+        var side1 = _tileCounter;
         ClearCounter();
-        CountNeighbors(oppositeTiles[1]);
-        Debug.Log("side 2: " +_tileCounter);
+        CountNeighbors2(oppositeTiles[1]);
+        var side2 = _tileCounter;
+        
+        //check always the smaller side
+        if (side1 < side2)
+        {
+            var tilesNeeded = CountTilesNeeded(_listOfTiles1);
+            if (tilesNeeded > _listOfTiles1.Count)
+            {
+                //good, continues playing
+                _audioSource.PlayOneShot(_winClip);
+            }
+            else
+            {
+                if (tilesNeeded != 0)
+                {
+                    //bad, game over.
+                    Time.timeScale = 0.0f;
+                    losingScreen.SetActive(true); 
+                }
+            }
+            Debug.Log(tilesNeeded);
+        }
+        else
+        {
+            var tilesNeeded = CountTilesNeeded(_listOfTiles2);
+            if (tilesNeeded > _listOfTiles2.Count)
+            {
+                //good, continues playing
+                _audioSource.PlayOneShot(_winClip);
+            }
+            else
+            {
+                if (tilesNeeded != 0)
+                {
+                    //bad, game over.
+                    Time.timeScale = 0.0f;
+                    losingScreen.SetActive(true); 
+                }
+            }
+            Debug.Log(tilesNeeded);
+        }
 
     }
 
-    private void CountNeighbors(GameObject currentTile)
+    private int CountTilesNeeded(List<GameObject> listOfTiles)
+    {
+        List<GameObject> enemies = new List<GameObject>();
+        foreach (var tile in listOfTiles)
+        {
+            var thingsOnTopOfTile = tile.GetComponent<Tile>().GetThingsOnTop();
+            foreach (var thing in thingsOnTopOfTile)
+            {
+                if (thing.CompareTag("Enemy"))
+                {
+                    if(!enemies.Contains(thing))
+                        enemies.Add(thing);
+                }
+            }
+        }
+
+        int tilesNeeded = 0;
+        foreach (var enemy in enemies)
+        {
+            tilesNeeded += enemy.GetComponent<EnemyAI>().tiles;
+        }
+
+        return tilesNeeded;
+    }
+
+    private void CountNeighbors1(GameObject currentTile)
     {
         currentTile.GetComponent<Tile>().isCounted = true;
+        _listOfTiles1.Add(currentTile);
         _tileCounter += 1;
         foreach (var neighbor in currentTile.GetComponent<Tile>().GetNeighbors())
         {
             if (!neighbor.GetComponent<Tile>().hasFenceOnTop && !neighbor.GetComponent<Tile>().isCounted)
             {
-                CountNeighbors(neighbor);
+                CountNeighbors1(neighbor);
+            }
+        }
+    }
+    private void CountNeighbors2(GameObject currentTile)
+    {
+        currentTile.GetComponent<Tile>().isCounted = true;
+        _listOfTiles2.Add(currentTile);
+        _tileCounter += 1;
+        foreach (var neighbor in currentTile.GetComponent<Tile>().GetNeighbors())
+        {
+            if (!neighbor.GetComponent<Tile>().hasFenceOnTop && !neighbor.GetComponent<Tile>().isCounted)
+            {
+                CountNeighbors2(neighbor);
             }
         }
     }

@@ -6,12 +6,14 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
+        public GameObject pauseScreen;
         private NavMeshAgent _agent;
         private Animator _animator;
         private RaycastHit _hit;
 
         private bool _isMoving;
         private bool _isBlocking;
+        private bool _isPaused;
 
         private readonly int _isMovingHash = Animator.StringToHash("isMoving");
         private readonly int _attackHash = Animator.StringToHash("Attack");
@@ -54,6 +56,32 @@ namespace Player
             _isBlocking = value.isPressed;
             _animator.SetBool(_isBlockingHash, _isBlocking);
         }
+
+        public void OnPause(InputValue value)
+        {
+            if (!_isPaused)
+            {
+                Pause();
+            }
+            else
+            {
+                Resume();
+            }
+        }
+
+        public void Pause()
+        {
+            _isPaused = true;
+            pauseScreen.SetActive(true);
+            Time.timeScale = 0.0f; 
+        }
+        public void Resume()
+        {
+            _isPaused = false;
+            pauseScreen.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+        
         private void SetDestinationToMousePosition()
         {
             if (Camera.main is { })

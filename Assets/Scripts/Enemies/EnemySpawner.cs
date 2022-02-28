@@ -41,5 +41,10 @@ namespace Enemies
                 AddEnemyToList();
             }
         }
+
+        public List<GameObject> GetEnemyList()
+        {
+            return _enemyList;
+        }
     }
 }

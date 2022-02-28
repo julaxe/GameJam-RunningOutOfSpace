@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class EnemyAI : MonoBehaviour
 {
+    public int tiles = 1;
     public float maxWaitTime = 4.0f;
     public float minWaitTime = 0.5f;
     public float maxWalkDistance = 3.0f;
