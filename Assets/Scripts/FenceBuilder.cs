@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class FenceBuilder : MonoBehaviour
 {
     public bool isOn;
+    public LayerMask whatIsGround;
     private GameObject _currentTile;
     private MapManager _mapManager;
     private int _tileCounter;
@@ -39,7 +40,7 @@ public class FenceBuilder : MonoBehaviour
         if (Camera.main is { })
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (Physics.Raycast(ray, out var hit))
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, whatIsGround))
             {
                 if (!hit.transform.gameObject.GetComponent<Tile>()) return;
                 //if its a tile

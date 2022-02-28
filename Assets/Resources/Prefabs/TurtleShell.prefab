@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 2130068566671455477}
   - component: {fileID: 2075521926913104555}
   - component: {fileID: -915671457916716393}
+  - component: {fileID: 2587589879694300786}
   m_Layer: 0
   m_Name: TurtleShell
   m_TagString: Untagged
@@ -228,7 +229,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132552985501933263}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.192, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -247,7 +248,7 @@ Animator:
   m_GameObject: {fileID: 2132552985501933263}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 56dd4edec19a3b04195448769c085dfc, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1b58d63f942126347865fbdde70e67c5, type: 2}
+  m_Controller: {fileID: 9100000, guid: b887f0ecf259f3e49b9e0e79fe95a547, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -266,10 +267,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 2
+  m_Acceleration: 5000
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 100000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -278,6 +279,26 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2587589879694300786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132552985501933263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6386a62e9499d343bd197022f3e6764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxWaitTime: 4
+  minWaitTime: 0.5
+  maxWalkDistance: 3
+  minWalkDistance: 0.5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  isPatrolling: 1
 --- !u!1 &2132609741341249593
 GameObject:
   m_ObjectHideFlags: 0

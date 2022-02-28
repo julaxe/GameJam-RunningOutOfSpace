@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1500973252323881050}
   - component: {fileID: -594448998964749050}
   - component: {fileID: 1660135085031272992}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasFenceOnTop: 0
   isCounted: 0
+  column: 0
+  row: 0
 --- !u!114 &1660135085031272992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +156,7 @@ GameObject:
   - component: {fileID: 7164122459223464563}
   - component: {fileID: 2687206544451768418}
   - component: {fileID: 9150819721707141177}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Fence
   m_TagString: Untagged
   m_Icon: {fileID: 0}

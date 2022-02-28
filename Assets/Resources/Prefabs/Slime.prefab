@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 4123014577527891909}
   - component: {fileID: 4068324857285220871}
   - component: {fileID: -4202274081139951130}
+  - component: {fileID: -278034968234829483}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -427,7 +428,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4117810210111867369}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.192, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -446,7 +447,7 @@ Animator:
   m_GameObject: {fileID: 4117810210111867369}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1f499d0eded7a4245b0c36149a43da4f, type: 3}
-  m_Controller: {fileID: 9100000, guid: fb53b4d3a4f06844c90da7297e9082de, type: 2}
+  m_Controller: {fileID: 9100000, guid: 926a3dcf3dd56d7458d000b9e9959178, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -465,10 +466,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 2
+  m_Acceleration: 5000
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 100000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -477,3 +478,23 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-278034968234829483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4117810210111867369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6386a62e9499d343bd197022f3e6764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxWaitTime: 4
+  minWaitTime: 0.5
+  maxWalkDistance: 3
+  minWalkDistance: 0.5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  isPatrolling: 1
